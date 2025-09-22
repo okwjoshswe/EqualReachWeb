@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'equalreach.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.parse(
-        "postgresql://surveyspheredb_user:3KhonNw7jJYOjKhHgh1ThK1TY2c9Pjjo@dpg-d34segur433s738b2isg-a.oregon-postgres.render.com/surveyspheredb"
+       'postgresql://mypostgresdb_824f_user:d1DDkxlM99eTrIKJNaPSTP6t6aaRAiYE@dpg-d38of233fgac73b7in8g-a/mypostgresdb_824f'
     ) 
 }
 
