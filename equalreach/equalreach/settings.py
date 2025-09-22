@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-nyd+i_b-o6ubldrudxdg6!fs7#lal_mkkz6k7n)5r!^nwmf@7c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['equalreachweb.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['equalreachweb-vn5i.onrender.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
