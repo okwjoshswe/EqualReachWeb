@@ -1,0 +1,288 @@
+{% extends 'petitions/base.html' %}
+
+
+{% block title %}Create Petition - Equal Reach{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50/30 py-12">
+    <div class="max-w-4xl mx-auto px-4">
+        <!-- Header Section -->
+        <div class="text-center mb-12 bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-lg border border-blue-100/50">
+            <h1 class="text-5xl font-black bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 bg-clip-text text-transparent mb-4 tracking-tight">
+                Create New Petition
+            </h1>
+            <p class="text-xl text-blue-600/70 font-light max-w-2xl mx-auto leading-relaxed">
+                Start a movement. Share your cause. Make change happen.
+            </p>
+        </div>
+
+        <!-- Main Form Container -->
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl shadow-blue-500/10 border border-blue-100/50 overflow-hidden">
+            <!-- Form Header with Gradient -->
+            <div class="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 px-8 py-6">
+                <div class="flex items-center gap-4 text-white">
+                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold">Petition Details</h2>
+                        <p class="text-blue-100">Fill out the form below to create your petition</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Content -->
+            <div class="p-8">
+                <form method="post" class="space-y-8">
+                    {% csrf_token %}
+
+                    <!-- Title Field -->
+                    <div class="space-y-3">
+                        <label for="title" class="flex items-center gap-3 text-lg font-semibold text-blue-900">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                            </svg>
+                            Petition Title
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="title" name="title" maxlength="200" required
+                            class="w-full px-6 py-4 text-lg border-2 border-blue-100 rounded-xl bg-blue-50/30 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 placeholder-blue-400"
+                            placeholder="Give your petition a compelling title...">
+                        <div class="flex items-center justify-between text-sm">
+                            <p class="text-blue-600/70">Make it clear and attention-grabbing</p>
+                            <span class="text-blue-500 font-medium bg-blue-100 px-3 py-1 rounded-full">Max 200 characters</span>
+                        </div>
+                    </div>
+
+                    <!-- Description Field -->
+                    <div class="space-y-3">
+                        <label for="description" class="flex items-center gap-3 text-lg font-semibold text-blue-900">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Detailed Description
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="description" name="description" rows="8" required
+                            placeholder="Explain what you want to change and why it matters. Be specific about the problem and your proposed solution. Share your personal connection to this cause..."
+                            class="w-full px-6 py-4 text-lg border-2 border-blue-100 rounded-xl bg-blue-50/30 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 placeholder-blue-400 resize-none"></textarea>
+                        <p class="text-blue-600/70">Tell your story. Explain why this petition matters and what change you want to see.</p>
+                    </div>
+
+                    <!-- Category Field -->
+                    <div class="space-y-3">
+                        <label for="category" class="flex items-center gap-3 text-lg font-semibold text-blue-900">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                            </svg>
+                            Category
+                            <span class="text-blue-500 text-sm font-normal">(Optional)</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="category" name="category" maxlength="100"
+                                placeholder="e.g., Disability Rights, Environment, Education, Health, Social Justice"
+                                class="w-full px-6 py-4 text-lg border-2 border-blue-100 rounded-xl bg-blue-50/30 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 placeholder-blue-400">
+                        </div>
+                        <p class="text-blue-600/70">Help people find your petition by choosing a relevant category</p>
+                    </div>
+
+                    <!-- Goal Field -->
+                    <div class="space-y-3">
+                        <label for="goal" class="flex items-center gap-3 text-lg font-semibold text-blue-900">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            Signature Goal
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="number" id="goal" name="goal" min="1" value="100" required
+                                class="w-full px-6 py-4 text-lg border-2 border-blue-100 rounded-xl bg-blue-50/30 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/20 transition-all duration-300">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-6 pointer-events-none">
+                                <span class="text-blue-600 font-medium">signatures</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                            <button type="button" onclick="document.getElementById('goal').value = 100"
+                                class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors duration-200 font-medium">
+                                100 signatures
+                            </button>
+                            <button type="button" onclick="document.getElementById('goal').value = 500"
+                                class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors duration-200 font-medium">
+                                500 signatures
+                            </button>
+                            <button type="button" onclick="document.getElementById('goal').value = 1000"
+                                class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors duration-200 font-medium">
+                                1,000 signatures
+                            </button>
+                        </div>
+                        <p class="text-blue-600/70">Set a realistic but ambitious goal. You can always increase it later!</p>
+                    </div>
+
+                    <!-- Tips Section -->
+                    <div class="bg-gradient-to-r from-blue-50 to-blue-50/50 rounded-2xl p-6 border border-blue-200">
+                        <h3 class="text-xl font-bold text-blue-900 mb-4 flex items-center gap-3">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                            Tips for Success
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-4 text-blue-700">
+                            <div class="flex items-start gap-3">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <p>Use clear, emotional language that connects with people</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <p>Include specific details and personal stories</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <p>Explain exactly what change you want to see</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <p>Share your petition on social media to gain support</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-6">
+                        <button type="submit"
+                            class="group relative w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-6 px-8 rounded-2xl text-xl shadow-xl hover:shadow-2xl hover:shadow-blue-500/25 transform hover:-translate-y-1 transition-all duration-300 hover:from-blue-700 hover:to-blue-800">
+                            <span class="flex items-center justify-center gap-3">
+                                <svg class="w-7 h-7 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                </svg>
+                                Launch Your Petition
+                            </span>
+                            <div class="absolute -top-2 -right-2 w-6 h-6 bg-blue-400 rounded-full animate-pulse"></div>
+                        </button>
+                        <p class="text-center text-blue-600/70 mt-4 text-lg">
+                            By creating this petition, you're taking the first step toward change
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="mt-12 text-center">
+            <div class="inline-flex items-center gap-6 bg-white/90 backdrop-blur-lg rounded-2xl px-8 py-4 shadow-lg border border-blue-100/50">
+                <a href="{% url 'petitions:petition_list' %}" 
+                   class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Back to All Petitions
+                </a>
+                <div class="w-px h-6 bg-blue-300"></div>
+                <a href="{% url 'dashboard' %}" 
+                   class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h2a2 2 0 012 2v2H8V5z"/>
+                    </svg>
+                    Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Animations and Interactions -->
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .form-section {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+    
+    .form-section:nth-child(2) { animation-delay: 0.1s; }
+    .form-section:nth-child(3) { animation-delay: 0.2s; }
+    .form-section:nth-child(4) { animation-delay: 0.3s; }
+    .form-section:nth-child(5) { animation-delay: 0.4s; }
+
+    /* Enhanced focus styles */
+    input:focus, textarea:focus {
+        transform: translateY(-2px);
+    }
+    
+    /* Smooth transitions for all interactive elements */
+    input, textarea, button {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add character counter for title
+        const titleInput = document.getElementById('title');
+        const titleCounter = document.createElement('div');
+        titleCounter.className = 'text-right text-sm text-blue-500 mt-1';
+        titleInput.parentNode.appendChild(titleCounter);
+        
+        function updateTitleCounter() {
+            const remaining = 200 - titleInput.value.length;
+            titleCounter.textContent = `${titleInput.value.length}/200 characters`;
+            titleCounter.className = remaining < 20 ? 'text-right text-sm text-red-500 mt-1' : 'text-right text-sm text-blue-500 mt-1';
+        }
+        
+        titleInput.addEventListener('input', updateTitleCounter);
+        updateTitleCounter();
+
+        // Add word counter for description
+        const descInput = document.getElementById('description');
+        const descCounter = document.createElement('div');
+        descCounter.className = 'text-right text-sm text-blue-500 mt-1';
+        descInput.parentNode.appendChild(descCounter);
+        
+        function updateDescCounter() {
+            const wordCount = descInput.value.trim().split(/\s+/).filter(word => word.length > 0).length;
+            descCounter.textContent = `${wordCount} words`;
+        }
+        
+        descInput.addEventListener('input', updateDescCounter);
+        updateDescCounter();
+
+        // Auto-resize textarea
+        descInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+
+        // Form validation enhancement
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            const title = titleInput.value.trim();
+            const description = descInput.value.trim();
+            
+            if (title.length < 10) {
+                e.preventDefault();
+                alert('Please provide a more descriptive title (at least 10 characters).');
+                titleInput.focus();
+                return;
+            }
+            
+            if (description.length < 50) {
+                e.preventDefault();
+                alert('Please provide a more detailed description (at least 50 characters).');
+                descInput.focus();
+                return;
+            }
+        });
+    });
+</script>
+{% endblock %}

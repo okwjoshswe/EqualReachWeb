@@ -1,0 +1,408 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EqualReach - Empowering voices through accessible petition advocacy">
+    <meta name="keywords" content="petitions, accessibility, advocacy, equal rights, social change">
+    <title>{% block title %}EqualReach - Petition Platform{% endblock %}</title>
+    
+    <!-- TailwindCSS -->
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                        'slide-in-left': 'slideInLeft 0.6s ease-out forwards',
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideInLeft: {
+                            '0%': { opacity: '0', transform: 'translateX(-30px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Styles -->
+    <style>
+        /* Glass morphism utility */
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3b82f6, #1e40af);
+            border-radius: 4px;
+        }
+        
+        /* Message animations */
+        .message-slide-in {
+            animation: slideInRight 0.5s ease-out forwards;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Enhanced focus styles */
+        .focus-ring:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+    </style>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50/30 text-gray-900 flex flex-col">
+    
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass border-b border-blue-100/50 shadow-lg">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo/Brand -->
+                <div class="flex items-center space-x-3">
+                    <a href="{% url 'dashboard' %}" class="group flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-universal-access text-white text-xl"></i>
+                        </div>
+                        <div class="hidden sm:block">
+                            <h1 class="text-2xl font-black bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 bg-clip-text text-transparent tracking-tight">
+                                EqualReach
+                            </h1>
+                            <p class="text-sm text-blue-600/70 font-medium -mt-1">Voices for Change</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->      
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard' %}" 
+                           class="nav-link text-blue-700 hover:text-blue-800 font-semibold transition-all duration-200 relative group px-3 py-2">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-blue-700 transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- User Menu (Desktop) -->
+                {% if user.is_authenticated %}
+                <div class="hidden lg:flex items-center">
+                    <div class="relative group">
+                        <button class="flex items-center space-x-3 bg-blue-100 hover:bg-blue-200 px-4 py-2 rounded-xl transition-colors duration-200 focus-ring">
+                            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
+                                {{ user.get_full_name.0|default:user.username.0|upper }}
+                            </div>
+                            <span class="font-medium text-blue-800">{{ user.get_full_name|default:user.username|truncatechars:15 }}</span>
+                            <i class="fas fa-chevron-down text-blue-600 text-sm group-hover:rotate-180 transition-transform duration-200"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="absolute right-0 mt-2 w-64 glass rounded-2xl shadow-xl border border-blue-100/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                            <div class="py-3">
+                                <div class="px-4 py-3 border-b border-blue-100">
+                                    <p class="font-semibold text-blue-900">{{ user.get_full_name|default:user.username }}</p>
+                                    <p class="text-sm text-blue-600 truncate">{{ user.email }}</p>
+                                </div>
+                                <a href="{% url 'dashboard' %}" 
+                                   class="flex items-center px-4 py-3 text-blue-700 hover:bg-blue-50 transition-colors duration-200">
+                                    <i class="fas fa-tachometer-alt mr-3 w-4"></i>Dashboard
+                                </a>
+                                <a href="#" 
+                                   class="flex items-center px-4 py-3 text-blue-700 hover:bg-blue-50 transition-colors duration-200">
+                                    <i class="fas fa-user mr-3 w-4"></i>Profile
+                                </a>
+                                <a href="#" 
+                                   class="flex items-center px-4 py-3 text-blue-700 hover:bg-blue-50 transition-colors duration-200">
+                                    <i class="fas fa-cog mr-3 w-4"></i>Settings
+                                </a>
+                                <hr class="my-2 border-blue-100">
+                                <a href="{% url 'logout' %}" 
+                                   class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 transition-colors duration-200">
+                                    <i class="fas fa-sign-out-alt mr-3 w-4"></i>Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Mobile Menu Button -->
+                <button class="lg:hidden text-blue-700 hover:text-blue-800 p-2 focus-ring rounded-lg" id="mobile-menu-button">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div class="lg:hidden glass border-t border-blue-100/50 mt-4 rounded-2xl hidden" id="mobile-menu">
+                <div class="px-4 py-6 space-y-4">
+                    <a href="{% url 'petitions:petition_list' %}" 
+                       class="flex items-center px-4 py-3 text-blue-700 hover:bg-blue-50 rounded-xl transition-colors duration-200">
+                        <i class="fas fa-list mr-3 w-5"></i>All Petitions
+                    </a>
+                    
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard' %}" 
+                           class="flex items-center px-4 py-3 text-blue-700 hover:bg-blue-50 rounded-xl transition-colors duration-200">
+                            <i class="fas fa-tachometer-alt mr-3 w-5"></i>Dashboard
+                        </a>
+                        <a href="{% url 'petitions:petition_create' %}" 
+                           class="flex items-center px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold">
+                            <i class="fas fa-plus mr-3 w-5"></i>Create Petition
+                        </a>
+                        <div class="border-t border-blue-200 pt-4 mt-4">
+                            <div class="flex items-center px-4 py-3 bg-blue-50 rounded-xl mb-3">
+                                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                                    {{ user.get_full_name.0|default:user.username.0|upper }}
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-blue-900">{{ user.get_full_name|default:user.username }}</p>
+                                    <p class="text-sm text-blue-600 truncate">{{ user.email }}</p>
+                                </div>
+                            </div>
+                            <a href="#" 
+                               class="flex items-center px-4 py-3 text-blue-700 hover:bg-blue-50 rounded-xl transition-colors duration-200">
+                                <i class="fas fa-user mr-3 w-5"></i>Profile
+                            </a>
+                            <a href="#" 
+                               class="flex items-center px-4 py-3 text-blue-700 hover:bg-blue-50 rounded-xl transition-colors duration-200">
+                                <i class="fas fa-cog mr-3 w-5"></i>Settings
+                            </a>
+                            <a href="{% url 'logout' %}" 
+                               class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-colors duration-200">
+                                <i class="fas fa-sign-out-alt mr-3 w-5"></i>Logout
+                            </a>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'login' %}" 
+                           class="flex items-center px-4 py-3 text-blue-700 hover:bg-blue-50 rounded-xl transition-colors duration-200">
+                            <i class="fas fa-sign-in-alt mr-3 w-5"></i>Login
+                        </a>
+                        <a href="{% url 'signup' %}" 
+                           class="flex items-center px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold">
+                            <i class="fas fa-user-plus mr-3 w-5"></i>Sign Up
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Messages/Alerts -->
+    {% if messages %}
+        <div class="fixed top-24 right-4 z-50 space-y-3" id="messages-container">
+            {% for message in messages %}
+                <div class="message-alert glass border-l-4 p-4 rounded-r-2xl shadow-xl max-w-sm message-slide-in
+                    {% if message.tags == 'success' %}border-green-500 bg-green-50/90{% elif message.tags == 'error' %}border-red-500 bg-red-50/90{% elif message.tags == 'warning' %}border-yellow-500 bg-yellow-50/90{% else %}border-blue-500 bg-blue-50/90{% endif %}">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-3">
+                                {% if message.tags == 'success' %}
+                                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-check text-white text-sm"></i>
+                                    </div>
+                                {% elif message.tags == 'error' %}
+                                    <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-exclamation text-white text-sm"></i>
+                                    </div>
+                                {% elif message.tags == 'warning' %}
+                                    <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-exclamation-triangle text-white text-sm"></i>
+                                    </div>
+                                {% else %}
+                                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-info text-white text-sm"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-900 text-sm leading-tight">{{ message }}</p>
+                            </div>
+                        </div>
+                        <button class="ml-3 text-gray-400 hover:text-gray-600 focus:outline-none flex-shrink-0" 
+                                onclick="this.parentElement.parentElement.remove()">
+                            <i class="fas fa-times text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="flex-1 container mx-auto px-6 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+<footer class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white">
+    <div class="container mx-auto px-6 py-16">
+        <!-- Centered Brand Section -->
+        <div class="text-center max-w-2xl mx-auto">
+            <div class="flex items-center justify-center space-x-4 mb-8">
+                <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg animate-float">
+                    <i class="fas fa-universal-access text-white text-2xl"></i>
+                </div>
+                <h3 class="text-4xl font-black bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                    EqualReach
+                </h3>
+            </div>
+            
+            <p class="text-blue-100 text-xl leading-relaxed mb-8 font-light">
+                Amplifying disabled voices to create change that matters.
+            </p>
+            
+            <!-- Bottom Copyright -->
+            <div class="border-t border-white/20 pt-8">
+                <p class="text-blue-200 text-lg mb-2">
+                    © 2025 <span class="font-semibold text-white">EqualReach</span>. All rights reserved.
+                </p>
+                <div class="flex items-center justify-center space-x-2">
+                    <span class="text-blue-300">Built for Inclusion and Pro-Disability Advocacy</span>
+                    <i class="fas fa-heart text-red-400 animate-pulse text-lg"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Scroll to Top Button -->
+<button id="scroll-to-top" 
+        class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 opacity-0 invisible z-40 focus-ring">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Add the floating animation -->
+<style>
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+    
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+</style>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Scroll to top functionality
+        const scrollToTopBtn = document.getElementById('scroll-to-top');
+        
+        if (scrollToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopBtn.classList.remove('opacity-0', 'invisible');
+                    scrollToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    scrollToTopBtn.classList.add('opacity-0', 'invisible');
+                    scrollToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+            
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Auto-hide messages after 6 seconds
+        setTimeout(() => {
+            const messagesContainer = document.getElementById('messages-container');
+            if (messagesContainer) {
+                messagesContainer.style.opacity = '0';
+                messagesContainer.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    messagesContainer.remove();
+                }, 300);
+            }
+        }, 6000);
+
+        // Enhanced form submission states
+        document.addEventListener('submit', (e) => {
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn && !submitBtn.disabled) {
+                const originalContent = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-75');
+                
+                // Re-enable after 10 seconds (fallback)
+                setTimeout(() => {
+                    if (submitBtn.disabled) {
+                        submitBtn.innerHTML = originalContent;
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-75');
+                    }
+                }, 10000);
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdowns = document.querySelectorAll('.group');
+            dropdowns.forEach(dropdown => {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.querySelector('.group-hover\\:opacity-100')?.classList.add('opacity-0', 'invisible');
+                }
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

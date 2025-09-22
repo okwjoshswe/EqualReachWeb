@@ -1,0 +1,222 @@
+{% extends "petitions/base.html" %}
+{% block title %}Settings - Equal Reach{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50/30 py-12">
+    <div class="max-w-4xl mx-auto px-4">
+        
+        <!-- Page Header -->
+        <div class="text-center mb-12 bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-lg border border-blue-100/50">
+            <div class="flex items-center justify-center gap-4 mb-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg animate-float">
+                    <i class="fas fa-cog text-white text-2xl"></i>
+                </div>
+                <h1 class="text-5xl font-black bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 bg-clip-text text-transparent tracking-tight">
+                    Settings
+                </h1>
+            </div>
+            <p class="text-xl text-blue-600/70 font-light max-w-2xl mx-auto">
+                Customize your profile and accessibility preferences for the best experience.
+            </p>
+        </div>
+
+        <!-- Settings Form -->
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-blue-100/50 overflow-hidden">
+            <!-- Form Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6">
+                <div class="flex items-center gap-4 text-white">
+                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                        <i class="fas fa-user-edit text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold">Profile Settings</h2>
+                        <p class="text-blue-100">Update your personal information and preferences</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Content -->
+            <form method="POST" enctype="multipart/form-data" class="p-8 space-y-8">
+                {% csrf_token %}
+
+                <!-- Personal Information Section -->
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-blue-900 flex items-center gap-3 border-b border-blue-100 pb-3">
+                        <i class="fas fa-id-card text-blue-600"></i>
+                        Personal Information
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- First Name -->
+                        <div class="space-y-2">
+                            <label class="block text-lg font-semibold text-blue-900">
+                                <i class="fas fa-user mr-2 text-blue-600"></i>
+                                First Name
+                            </label>
+                            <input type="text" 
+                                   name="first_name" 
+                                   value="{{ user.first_name }}" 
+                                   class="w-full px-4 py-3 border-2 border-blue-100 rounded-xl bg-blue-50/30 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 text-lg"
+                                   placeholder="Enter your first name">
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="space-y-2">
+                            <label class="block text-lg font-semibold text-blue-900">
+                                <i class="fas fa-user mr-2 text-blue-600"></i>
+                                Last Name
+                            </label>
+                            <input type="text" 
+                                   name="last_name" 
+                                   value="{{ user.last_name }}" 
+                                   class="w-full px-4 py-3 border-2 border-blue-100 rounded-xl bg-blue-50/30 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 text-lg"
+                                   placeholder="Enter your last name">
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="space-y-2">
+                        <label class="block text-lg font-semibold text-blue-900">
+                            <i class="fas fa-envelope mr-2 text-blue-600"></i>
+                            Email Address
+                        </label>
+                        <input type="email" 
+                               name="email" 
+                               value="{{ user.email }}" 
+                               class="w-full px-4 py-3 border-2 border-blue-100 rounded-xl bg-blue-50/30 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 text-lg"
+                               placeholder="Enter your email address">
+                    </div>
+
+                    <!-- User Name -->
+                    <div class="space-y-2">
+                        <label class="block text-lg font-semibold text-blue-900">
+                            <i class="fas fa-signature mr-2 text-blue-600"></i>
+                            User Name
+                        </label>
+                        <input type="text" 
+                               name="username" 
+                               value="{{ user.username }}" 
+                               class="w-full px-4 py-3 border-2 border-blue-100 rounded-xl bg-blue-50/30 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 text-lg"
+                               placeholder="How your name appears to others">
+                    </div>
+
+                    <!-- Disability Type -->
+                    <div class="space-y-2">
+                        <label class="block text-lg font-semibold text-blue-900">
+                            <i class="fas fa-universal-access mr-2 text-blue-600"></i>
+                            Disability Type <span class="text-blue-500 text-sm font-normal">(Optional)</span>
+                        </label>
+                        <input type="text" 
+                               name="disability_type" 
+                               value="{{ profile.disability_type }}" 
+                               class="w-full px-4 py-3 border-2 border-blue-100 rounded-xl bg-blue-50/30 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 text-lg"
+                               placeholder="e.g., Visual, Mobility, Cognitive, etc.">
+                        <p class="text-blue-600/70 text-sm">Help us better understand our community (this information is private)</p>
+                    </div>
+
+                </div>
+
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-blue-100">
+                    <button type="submit" 
+                            class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3">
+                        <i class="fas fa-save"></i>
+                        Save Settings
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Back to Dashboard -->
+        <div class="text-center mt-8">
+            <a href="{% url 'dashboard' %}" 
+               class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-lg text-blue-700 px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl border-2 border-blue-200 hover:border-blue-300 transform hover:-translate-y-0.5 transition-all duration-300">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Animations -->
+<style>
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+    
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    /* Enhanced focus styles for accessibility */
+    input:focus, textarea:focus, button:focus {
+        transform: translateY(-1px);
+    }
+    
+    /* File input styling */
+    input[type="file"]::-webkit-file-upload-button {
+        transition: all 0.2s ease;
+    }
+    
+    /* Checkbox styling */
+    input[type="checkbox"]:checked {
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6 10.293l7.146-7.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+    }
+</style>
+
+<script>
+    // Add character counter for bio
+    document.addEventListener('DOMContentLoaded', function() {
+        const bioTextarea = document.querySelector('textarea[name="bio"]');
+        const counter = document.createElement('div');
+        counter.className = 'text-right text-sm text-blue-500 mt-1';
+        bioTextarea.parentNode.appendChild(counter);
+        
+        function updateCounter() {
+            const length = bioTextarea.value.length;
+            counter.textContent = `${length}/500 characters`;
+            if (length > 450) {
+                counter.className = 'text-right text-sm text-orange-500 mt-1';
+            } else if (length > 500) {
+                counter.className = 'text-right text-sm text-red-500 mt-1';
+            } else {
+                counter.className = 'text-right text-sm text-blue-500 mt-1';
+            }
+        }
+        
+        bioTextarea.addEventListener('input', updateCounter);
+        updateCounter();
+
+        // File upload preview
+        const fileInput = document.querySelector('input[type="file"]');
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // You could add image preview functionality here
+                    console.log('File selected:', file.name);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form validation
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            const email = document.querySelector('input[name="email"]').value;
+            if (email && !email.includes('@')) {
+                e.preventDefault();
+                alert('Please enter a valid email address.');
+                return;
+            }
+        });
+    });
+</script>
+{% endblock %}

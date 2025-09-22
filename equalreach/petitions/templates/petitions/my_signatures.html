@@ -1,0 +1,279 @@
+{% extends "petitions/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50/30 py-12">
+    <div class="max-w-6xl mx-auto px-4">
+        
+        <!-- Page Header -->
+        <div class="text-center mb-12 bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-lg border border-blue-100/50">
+            <div class="flex items-center justify-center gap-4 mb-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg animate-float">
+                    <i class="fas fa-signature text-white text-2xl"></i>
+                </div>
+                <h1 class="text-5xl font-black bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 bg-clip-text text-transparent tracking-tight">
+                    Petitions I Signed
+                </h1>
+            </div>
+            <p class="text-xl text-blue-600/70 font-light max-w-2xl mx-auto">
+                Your history of supporting causes and making your voice heard for positive change.
+            </p>
+        </div>
+
+        {% if signatures %}
+            <!-- Signatures List -->
+            <div class="grid gap-6 mb-12">
+                {% for signature in signatures %}
+                    <article class="group bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-lg border border-blue-100/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-500 relative overflow-hidden">
+                        <!-- Gradient accent line -->
+                        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700"></div>
+                        
+                        <!-- Signed Badge -->
+                        <div class="absolute top-6 right-6">
+                            <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold border-2 border-blue-200 flex items-center gap-2 shadow-sm">
+                                <i class="fas fa-check-circle text-blue-600"></i>
+                                Signed
+                            </div>
+                        </div>
+
+                        <!-- Petition Content -->
+                        <div class="pr-24">
+                            <div class="flex items-start gap-4 mb-6">
+                                <!-- User Avatar -->
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                
+                                <div class="flex-1">
+                                    <h2 class="text-3xl font-bold text-blue-900 mb-3 leading-tight group-hover:text-blue-700 transition-colors duration-300">
+                                        {{ signature.petition.title }}
+                                    </h2>
+                                    
+                                    <p class="text-blue-700/80 text-lg leading-relaxed mb-4">
+                                        {{ signature.petition.description|truncatewords:30 }}
+                                    </p>
+                                    
+                                    <!-- Signature Metadata -->
+                                    <div class="flex flex-wrap items-center gap-6 text-blue-600/80 text-sm mb-4">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-pen-nib text-blue-500"></i>
+                                            <span class="font-semibold">Signed on {{ signature.signed_at|date:"M d, Y" }}</span>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-clock text-blue-500"></i>
+                                            <span class="font-medium">{{ signature.signed_at|timesince }} ago</span>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-user text-blue-500"></i>
+                                            <span class="font-medium">
+                                                Created by {{ signature.petition.creator.get_full_name|default:signature.petition.creator.username }}
+                                            </span>
+                                        </div>
+                                        
+                                        {% if signature.petition.category %}
+                                            <div class="flex items-center gap-2">
+                                                <i class="fas fa-tag text-blue-500"></i>
+                                                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                                    {{ signature.petition.category }}
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Your Comment Section -->
+                                    {% if signature.comment %}
+                                        <div class="bg-gradient-to-r from-blue-50 to-blue-50/50 rounded-2xl p-6 border-l-4 border-blue-400 shadow-sm">
+                                            <div class="flex items-start gap-3 mb-2">
+                                                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                                    <i class="fas fa-quote-left text-blue-600 text-sm"></i>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <h4 class="font-semibold text-blue-800 mb-1">Your Comment:</h4>
+                                                    <blockquote class="text-blue-700/90 italic text-lg leading-relaxed">
+                                                        "{{ signature.comment }}"
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="bg-gray-50 rounded-2xl p-4 border border-gray-200">
+                                            <p class="text-gray-500 italic text-center flex items-center justify-center gap-2">
+                                                <i class="fas fa-comment-slash text-gray-400"></i>
+                                                You signed this petition without leaving a comment
+                                            </p>
+                                        </div>
+                                    {% endif %}
+
+                                    <!-- Petition Stats -->
+                                    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="bg-blue-50/50 rounded-xl p-4 text-center">
+                                            <div class="text-2xl font-bold text-blue-800">
+                                                {{ signature.petition.total_signatures|default:0 }}
+                                            </div>
+                                            <div class="text-blue-600 text-sm font-medium">
+                                                Total Signatures
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-blue-50/50 rounded-xl p-4 text-center">
+                                            <div class="text-2xl font-bold text-blue-800">
+                                                {{ signature.petition.goal }}
+                                            </div>
+                                            <div class="text-blue-600 text-sm font-medium">
+                                                Signature Goal
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-blue-50/50 rounded-xl p-4 text-center">
+                                            <div class="text-2xl font-bold text-blue-800">
+                                                {{ signature.petition.progress_percentage|floatformat:1 }}%
+                                            </div>
+                                            <div class="text-blue-600 text-sm font-medium">
+                                                Progress
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="flex flex-wrap gap-4 mt-6">
+                                        <a href="{% url 'petitions:petition_detail' signature.petition.pk %}" 
+                                           class="flex-1 min-w-[160px] bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-6 rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                                            <i class="fas fa-eye"></i>
+                                            View Petition
+                                        </a>
+                                        
+                                        <a href="#" 
+                                           class="flex-1 min-w-[160px] bg-blue-100 hover:bg-blue-200 text-blue-700 text-center py-3 px-6 rounded-xl font-semibold transition-all duration-200 border border-blue-200 hover:border-blue-300 flex items-center justify-center gap-2">
+                                            <i class="fas fa-share-alt"></i>
+                                            Share Petition
+                                        </a>
+                                        
+                                        <a href="#" 
+                                           class="flex-1 min-w-[160px] bg-white hover:bg-gray-50 text-blue-600 text-center py-3 px-6 rounded-xl font-semibold transition-all duration-200 border-2 border-blue-200 hover:border-blue-300 flex items-center justify-center gap-2">
+                                            <i class="fas fa-chart-line"></i>
+                                            View Updates
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Achievement Badge (if petition reached goal) -->
+                        {% if signature.petition.progress_percentage >= 100 %}
+                            <div class="absolute bottom-4 right-4">
+                                <div class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold border-2 border-yellow-300 animate-pulse">
+                                    <i class="fas fa-trophy mr-1"></i>Goal Achieved!
+                                </div>
+                            </div>
+                        {% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+
+            <!-- Enhanced Pagination -->
+            {% if page_obj.has_other_pages %}
+                <div class="flex justify-center">
+                    <div class="flex items-center space-x-2 bg-white/90 backdrop-blur-lg rounded-2xl p-3 shadow-lg border border-blue-100/50">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1" 
+                               class="px-4 py-2 text-blue-600 hover:text-white hover:bg-blue-600 rounded-xl transition-colors duration-200 font-medium flex items-center gap-2">
+                                <i class="fas fa-angle-double-left"></i>First
+                            </a>
+                            <a href="?page={{ page_obj.previous_page_number }}" 
+                               class="px-4 py-2 text-blue-600 hover:text-white hover:bg-blue-600 rounded-xl transition-colors duration-200 font-medium flex items-center gap-2">
+                                <i class="fas fa-angle-left"></i>Previous
+                            </a>
+                        {% endif %}
+
+                        <div class="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold shadow-md">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </div>
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}" 
+                               class="px-4 py-2 text-blue-600 hover:text-white hover:bg-blue-600 rounded-xl transition-colors duration-200 font-medium flex items-center gap-2">
+                                Next<i class="fas fa-angle-right"></i>
+                            </a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}" 
+                               class="px-4 py-2 text-blue-600 hover:text-white hover:bg-blue-600 rounded-xl transition-colors duration-200 font-medium flex items-center gap-2">
+                                Last<i class="fas fa-angle-double-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+        {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-20 bg-white/80 backdrop-blur-xl rounded-3xl border border-blue-100/50 shadow-lg">
+                <div class="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
+                    <i class="fas fa-signature text-blue-600 text-4xl"></i>
+                </div>
+                
+                <h3 class="text-3xl font-bold text-blue-800 mb-4">No Signatures Yet</h3>
+                <p class="text-xl text-blue-600/70 mb-8 max-w-md mx-auto leading-relaxed">
+                    You haven't signed any petitions yet. Discover causes that matter to you and add your voice to the movement.
+                </p>
+                
+                <div class="space-y-4">
+                    <a href="{% url 'petitions:petition_list' %}" 
+                       class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 text-lg">
+                        <i class="fas fa-search text-xl"></i>
+                        Explore Petitions
+                    </a>
+                    
+                    <p class="text-blue-600/60 text-sm">
+                        or <a href="{% url 'petitions:petition_create' %}" class="text-blue-600 hover:text-blue-700 font-medium underline">create your own petition</a> to start a movement
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Back to Dashboard -->
+        <div class="text-center mt-12">
+            <a href="{% url 'dashboard' %}" 
+               class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-lg text-blue-700 px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl border-2 border-blue-200 hover:border-blue-300 transform hover:-translate-y-0.5 transition-all duration-300">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Animations -->
+<style>
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+    
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    article {
+        animation: slideInUp 0.6s ease-out forwards;
+    }
+    
+    article:nth-child(2) { animation-delay: 0.1s; }
+    article:nth-child(3) { animation-delay: 0.2s; }
+    article:nth-child(4) { animation-delay: 0.3s; }
+</style>
+{% endblock %}
